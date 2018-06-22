@@ -1,6 +1,5 @@
 package com.nbc.mailing_microservice.components;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,47 +16,43 @@ public class AppMailSender {
 	@Autowired
 	EmailService emailService;
 
-	public void sendTextMail() {
-
-		String from = "example@example.com";
-		String to = "example@example.com";
-		String subject = "Java Mail with Spring Boot - Plain Text";
-		List<String> cc = new ArrayList<>();
-		cc.add("example@example.com");
-		cc.add("example@example.com");
+	public void sendTextMail(Email data) {
+		System.out.println("data.getMsgBody() sendTextMail from top ::::" + data.getMsgBody());
+		String from = data.getFrom();
+		List<String> to = data.getTo();
+		String subject = data.getSubject();
+		List<String> cc = data.getCc();
 
 		EmailTemplate template = new EmailTemplate("hello-world-plain.txt");
-
 		Map<String, String> replacements = new HashMap<String, String>();
-		replacements.put("user", "All");
-		replacements.put("today", String.valueOf(new Date()));
+		replacements.put("user", data.getRecieverName());
+		replacements.put("body", data.getMsgBody());
+		replacements.put("sender", data.getSenderName());
+		String body = template.getTemplate(replacements);
+		data.setMsgBody(body);
+		System.out.println("data.getMsgBody() sendTextMail after replacing ::::" + data.getMsgBody());
+		boolean isHtml = false;
+		Email email = new Email(from, to, cc, subject, data.getMsgBody());
+		emailService.send(email, isHtml);
+	}
 
-		String message = template.getTemplate(replacements);
-
-//		Email email = new Email(from, to, subject, message);
+	public void sendHtmltMail(Email data) {
 		
-		Email email = new Email( from , to , cc , subject , message );
-
-		emailService.send(email);
-	}
-
-	public void sendHtmltMail() {
-
-		String from = "example@example.com";
-		String to = "example@example.com";
-		String subject = "Java Mail with Spring Boot Html Mail";
-
+		String from = data.getFrom();
+		List<String> to = data.getTo();
+		String subject = data.getSubject();
+		List<String> cc = data.getCc();
+		
 		EmailTemplate template = new EmailTemplate("hello-world.html");
-
 		Map<String, String> replacements = new HashMap<String, String>();
-		replacements.put("user", "username");
+		replacements.put("user", data.getRecieverName());
+		replacements.put("body", data.getMsgBody());
+		replacements.put("sender", data.getSenderName());
 		replacements.put("today", String.valueOf(new Date()));
-
-		String message = template.getTemplate(replacements);
-
-		Email email = new Email(from, to, subject, message);
-		email.setHtml(true);
-		emailService.send(email);
+		String msgBody = template.getTemplate(replacements);
+		data.setMsgBody(msgBody);
+		boolean isHtml = true;
+		Email email = new Email( from , to , cc , subject , data.getMsgBody() );
+		emailService.send(email,isHtml);
 	}
-
 }
