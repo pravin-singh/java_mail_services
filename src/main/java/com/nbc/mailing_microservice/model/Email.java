@@ -24,6 +24,24 @@ public class Email {
 	
 	private boolean isHtml;
 
+	private Email(String from, List<String> to, List<String> cc, String subject, String message, boolean isHtml) {
+		super();
+		this.from = from;
+		this.to = to;
+		this.cc = cc;
+		this.subject = subject;
+		this.message = message;
+		this.isHtml = isHtml;
+	}
+	public Email(String from, String to, List<String> cc, String subject, String message) {
+		this();
+		this.from = from;
+		this.to.addAll(Arrays.asList(splitByComma(to)));
+		this.cc = cc;
+		this.subject = subject;
+		this.message = message;
+	}
+
 	public Email() {
 		this.to = new ArrayList<String>();
 		this.cc = new ArrayList<String>();
