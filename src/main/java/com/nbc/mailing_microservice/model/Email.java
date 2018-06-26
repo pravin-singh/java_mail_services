@@ -1,8 +1,9 @@
 package com.nbc.mailing_microservice.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import org.springframework.boot.jackson.JsonComponent;
 
 import com.nbc.mailing_microservice.utility.AppUtil;
 
@@ -10,8 +11,14 @@ import com.nbc.mailing_microservice.utility.AppUtil;
  * @author ps145598
  *
  */
+
+@JsonComponent
 public class Email {
-	
+
+	private String recieverName;
+	private String senderName;
+	private String msgBody;
+
 	private String from;
 
 	private List<String> to;
@@ -20,26 +27,31 @@ public class Email {
 
 	private String subject;
 
-	private String message;
-	
-	private boolean isHtml;
+	// private String message;
 
-	private Email(String from, List<String> to, List<String> cc, String subject, String message, boolean isHtml) {
-		super();
+	// private boolean isHtml;
+
+	// @SuppressWarnings("unused")
+	// private Email(String from, List<String> to, List<String> cc, String subject,
+	// String message, boolean isHtml) {
+	// super();
+	// this.from = from;
+	// this.to = to;
+	// this.cc = cc;
+	// this.subject = subject;
+	// this.message = message;
+	// this.isHtml = isHtml;
+	// }
+
+	
+
+	public Email(String from, List<String> to, List<String> cc, String subject, String msgBody) {
+		this();
 		this.from = from;
 		this.to = to;
 		this.cc = cc;
 		this.subject = subject;
-		this.message = message;
-		this.isHtml = isHtml;
-	}
-	public Email(String from, String to, List<String> cc, String subject, String message) {
-		this();
-		this.from = from;
-		this.to.addAll(Arrays.asList(splitByComma(to)));
-		this.cc = cc;
-		this.subject = subject;
-		this.message = message;
+		this.msgBody = msgBody;
 	}
 
 	public Email() {
@@ -47,24 +59,50 @@ public class Email {
 		this.cc = new ArrayList<String>();
 	}
 
-	public Email(String from, String toList, String subject, String message) {
-		this();
-		this.from = from;
-		this.subject = subject;
-		this.message = message;
-		this.to.addAll(Arrays.asList(splitByComma(toList)));
+	// public Email(String from, String toList, String subject, String message) {
+	// this();
+	// this.from = from;
+	// this.subject = subject;
+	// this.message = message;
+	// this.to.addAll(Arrays.asList(splitByComma(toList)));
+	// }
+
+	// public Email(String from, String toList, String ccList, String subject,
+	// String message) {
+	// this();
+	// this.from = from;
+	// this.subject = subject;
+	// this.message = message;
+	// this.to.addAll(Arrays.asList(splitByComma(toList)));
+	// this.cc.addAll(Arrays.asList(splitByComma(ccList)));
+	// }
+
+	// new things added
+	public String getRecieverName() {
+		return recieverName;
 	}
 
-	public Email(String from, String toList, String ccList, String subject, String message) {
-		this();
-		this.from = from;
-		this.subject = subject;
-		this.message = message;
-		this.to.addAll(Arrays.asList(splitByComma(toList)));
-		this.cc.addAll(Arrays.asList(splitByComma(ccList)));
+	public void setRecieverName(String recieverName) {
+		this.recieverName = recieverName;
 	}
 
-	
+	public String getSenderName() {
+		return senderName;
+	}
+
+	public void setSenderName(String senderName) {
+		this.senderName = senderName;
+	}
+
+	public String getMsgBody() {
+		return msgBody;
+	}
+
+	public void setMsgBody(String msgBody) {
+		this.msgBody = msgBody;
+	}
+	// new things added
+
 	public String getFrom() {
 		return from;
 	}
@@ -73,62 +111,59 @@ public class Email {
 		this.from = from;
 	}
 
-	
 	public List<String> getTo() {
 		return to;
 	}
 
-	
 	public void setTo(List<String> to) {
 		this.to = to;
 	}
 
-	
 	public List<String> getCc() {
 		return cc;
 	}
 
-	
 	public void setCc(List<String> cc) {
 		this.cc = cc;
 	}
 
-	
 	public String getSubject() {
 		return subject;
 	}
 
-	
 	public void setSubject(String subject) {
 		this.subject = subject;
 	}
 
-	
-	public String getMessage() {
-		return message;
-	}
+	// public String getMessage() {
+	// return message;
+	// }
+	//
+	// public void setMessage(String message) {
+	// this.message = message;
+	// }
 
-	
-	public void setMessage(String message) {
-		this.message = message;
-	}
+//	public boolean isHtml() {
+//		return isHtml;
+//	}
+//
+//	public void setHtml(boolean isHtml) {
+//		this.isHtml = isHtml;
+//	}
 
-	
-	public boolean isHtml() {
-		return isHtml;
-	}
-	
-	
-	public void setHtml(boolean isHtml) {
-		this.isHtml = isHtml;
-	}
-
+	@SuppressWarnings("unused")
 	private String[] splitByComma(String toMultiple) {
 		String[] toSplit = toMultiple.split(",");
 		return toSplit;
 	}
 
-	public String getToAsList() {
+	public String toAsList() {
 		return AppUtil.concatenate(this.to, ",");
+	}
+
+	@Override
+	public String toString() {
+		return "Email [recieverName=" + recieverName + ", senderName=" + senderName + ", msgBody=" + msgBody + ", from="
+				+ from + ", to=" + to + ", cc=" + cc + ", subject=" + subject + "]";
 	}
 }

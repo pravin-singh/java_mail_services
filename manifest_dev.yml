@@ -1,0 +1,8 @@
+---
+applications:
+- name: mailing-service
+  instances: 1
+  memory: 3G
+  path: target/java_mail_services-0.0.1-SNAPSHOT.war
+  host: mailing-service
+
